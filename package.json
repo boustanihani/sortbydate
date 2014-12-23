@@ -1,0 +1,12 @@
+{
+  "name": "SortByDate",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "node sortbydate.js"
+  },
+  "author": "Hani Boustani",
+  "dependencies": {
+    "moment": "^2.8.4",
+    "recursive-readdir": "^1.2.0"
+  }
+}
