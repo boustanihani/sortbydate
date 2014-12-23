@@ -20,6 +20,12 @@ fs.stat(directory, function(err, stats) {
     }
 });
 
+var progress = function(number1, number2) {
+    var percent = number1 * 100 / number2;
+    //return percent.toFixed(2) + "% (" + number1 + '/' + number2 + ') ';
+    return parseInt(percent) + "% (" + number1 + '/' + number2 + ') ';
+};
+
 var sort = function() {
 
     console.log('Inhalt wird gelesen...');
@@ -29,8 +35,10 @@ var sort = function() {
         if (err) return console.log('Es ist ein Fehler aufgetreten!');
         //console.log(files);
 
+        var length = files.length;
+
         files.forEach(function(file, index) {
-            console.log(file);
+            console.log(progress(index + 1, length) + file);
         });
 
     });
