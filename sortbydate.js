@@ -4,7 +4,11 @@ var fs = require("fs");
 var path = require('path');
 var recursive = require('recursive-readdir');
 var moment = require('moment');
+
+moment.locale('de');
+
 var mkdirp = require('mkdirp');
+var mv = require('mv');
 
 var myArgs = process.argv.slice(2);
 //console.log(myArgs);
@@ -49,20 +53,31 @@ var sort = function() {
 
         var length = files.length;
 
+        var errors = [];
+
         files.forEach(function(file, index) {
             console.log(progress(index + 1, length) + file);
 
             // http://www.unixtutorial.org/2008/04/atime-ctime-mtime-in-unix-filesystems/
             var stats = fs.statSync(file);
-            var date = stats.mtime;
-            //console.log(date);
-            var destination = moment(date).format('YYYY/MM/DD');
-            var destinationPath = path.join(outputDir, destination);
-            var fileName = path.basename(file);
 
-            console.log('Moving "' + fileName + '" to ' + destinationPath);
-            if (!fs.existsSync(destinationPath)) mkdirp.sync(destinationPath);
+            if (stats.isFile()) {
+                var date = stats.mtime;
+                //console.log(date);
+                var destination = moment(date).format('YYYY/MM_MMMM/DD');
+                var destinationPath = path.join(outputDir, destination);
+                var fileName = path.basename(file);
+                var destinationFile = path.join(destinationPath, fileName);
 
+                console.log('Moving "' + fileName + '" => ' + destinationPath);
+                //if (!fs.existsSync(destinationPath)) mkdirp.sync(destinationPath);
+
+                mv(file, destinationFile, {
+                    mkdirp: true
+                }, function(err) {
+                    if (err) console.log('Error moving: ' + file);
+                });
+            }
         });
         console.log('\n\noutputDir=' + outputDir + '\n');
     });
