@@ -53,8 +53,6 @@ var sort = function() {
 
         var length = files.length;
 
-        var errors = [];
-
         files.forEach(function(file, index) {
             console.log(progress(index + 1, length) + file);
 
